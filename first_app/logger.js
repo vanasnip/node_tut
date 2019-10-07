@@ -1,14 +1,12 @@
-//(function (exports, require, module, __filename, __dirname){
-// this is what a module looks like under the hood;
-console.log(__filename);
-console.log(__dirname);
-var url = 'http://mylogger.io/log';
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
 
-function log(message){
+function log(message) {
   //send an http req
-  console.log(message);
+  console.log(`message: ${message}`);
+  emitter.emit('logging', { message });
 }
 
 module.exports = log;
 
-//});
+
