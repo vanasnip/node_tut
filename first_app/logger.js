@@ -3,10 +3,10 @@ const emitter = new EventEmitter();
 
 function log(message) {
   //send an http req
-  console.log(`message: ${message}`);
+  console.log(`message from emitter: ${message}`);
   emitter.emit('logging', { message });
 }
 
-module.exports = log;
+module.exports = { log, emitter };
 
 

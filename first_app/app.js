@@ -1,12 +1,10 @@
-const EventEmitter = require('events');
-const emitter = new EventEmitter();
+const { log, emitter } = require('./logger');
 
 // Register a listener
-emitter.on('', ({message}) => {
+emitter.on('logging', ({message}) => {
   // wont work because the instance of emitter in logger is different
   // from the instance of logger in this module
-  console.log(`listener called. ${message}`);
+  console.log(`logging from listener. ${message}`);
 });
 
-const log = require('./logger');
 log('message');
