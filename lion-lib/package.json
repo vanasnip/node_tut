@@ -1,0 +1,12 @@
+{
+  "name": "simple-add-function",
+  "version": "1.1.0",
+  "description": "testing publishing a package to npm registry",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "ivanagotothemoon",
+  "license": "ISC"
+}
