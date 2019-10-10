@@ -1,30 +1,102 @@
+
 const express = require('express');
 const app = express();
+const Joi = require('joi');
+app.use(express.json());
 
-app.get('/',(req,res)=>{
+const courses = [
+  { id: 1, name: 'course1' },
+  { id: 2, name: 'course2' },
+  { id: 3, name: 'course3' },
+]
+
+//DONE
+app.get('/', (req, res) => {
   let message = `Hello World`;
   res.send(message); // client o
   console.log(`logged ${message}`);
 });
-app.get('/api/courses', (req,res)=>{
-  res.send([1,2,3]);
+
+//DONE
+app.get('/api/courses', (req, res) => {
+  res.send(courses); // courses
+  console.log(`all courses`);
 });
 
-app.get('/api/courses/:id',(req,res)=>{
-  let {id} = req.params;
-  res.send(id);
-  console.log(`logging message: id - ${id}`);
+//DONE
+app.get('/api/courses/:id', (req, res) => {
+  const course = courses.find(c => c.id === parseInt(req.params.id));
+  if (!course) return res.status(404).send(`The course with the given ID: ${req.params.id} was not found.`);// 404 not found
+  res.send(course); // else
+  console.log(`logging : id - ${course}`);
 });
-app.get('/api/courses/:year/:month',(req,res)=>{
-  let {year, month} = req.params; // params required
+
+//DONE
+app.get('/api/courses/:year/:month', (req, res) => {
+  let { year, month } = req.params; // params required
   let query = req.query; //opitonal
   res.send(query);
   console.log(`logging message: year - ${year} | month - ${month} | query - ${query || 'none'}`);
 });
 
+//DONE
+app.post('/api/courses', (req, res) => {
+  const { error } = validateCourse(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  const course = {
+    id: courses.length + 1,
+    name: req.body.name
+  }
+  courses.push(course);
+  res.send(course); // return id of the post to client | this is how post req are handled
+  console.log(courses);
+});
 
+//DONE
+app.put('/api/courses/:id', (req, res) => {
+  const course = findCourse(req.params.id);
+  if (!course) return  res.status(404).send(`The course with the given ID: ${req.params.id} was not found.`);// 404 not found
+  const { error } = validateCourse(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  course.name = req.body.name;
+  res.send(course);
+});
+
+//DONE - Delete course endpoint
+app.delete('/api/courses/:id', (req, res) => {
+  const { id } = req.params;
+  const course = findCourse(id);
+  if (!course) return res.status(404).send(`The course with the given ID: ${id} was not found.`);// 404 not found
+  const index = courses.indexOf(course);
+  courses.splice(index,1);
+  res.send(course);
+
+  //NOTE array methods ->
+  //NOTE        find: (callback(elem[,index[,array]])[, thisArg])
+  //NOTE        splice: mutates the array, (start[,deteleCount[, item1[, item2[, ...]]]])
+});
+
+function findCourse(id) {
+  // testFind(); //TEST
+
+  return courses.find(c => c.id === parseInt(id));
+
+  //NOTE what if more than one is found? does it return on it's first instance or carries on?
+  //NOTE: I suspect it return on the first one -> testFind();
+  function testFind() {
+    const val = [1, 2, 3, 1, 3, 2, 2, 2].find(num => num === 2);
+    console.log(val);
+  }
+}
+
+function validateCourse(course) {
+  const schema = {
+    name: Joi.string().min(3).required()
+  }
+  return Joi.validate(course, schema);
+}
 
 // PORT
 const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`listening on port ${port}...`)); // server o
 
-app.listen(port,()=>console.log(`listening on port ${port}...`)); // server o
