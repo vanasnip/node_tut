@@ -2,7 +2,13 @@
 const express = require('express');
 const app = express();
 const Joi = require('joi');
+
 app.use(express.json());
+
+app.use((req, res, next)=>{
+  console.log(`${new Date()} - ${req.method} - ${req.url}`);
+  next();
+})
 
 const courses = [
   { id: 1, name: 'course1' },
@@ -14,13 +20,11 @@ const courses = [
 app.get('/', (req, res) => {
   let message = `Hello World`;
   res.send(message); // client o
-  console.log(`logged ${message}`);
 });
 
 //DONE
 app.get('/api/courses', (req, res) => {
   res.send(courses); // courses
-  console.log(`all courses`);
 });
 
 //DONE
@@ -28,7 +32,6 @@ app.get('/api/courses/:id', (req, res) => {
   const course = courses.find(c => c.id === parseInt(req.params.id));
   if (!course) return res.status(404).send(`The course with the given ID: ${req.params.id} was not found.`);// 404 not found
   res.send(course); // else
-  console.log(`logging : id - ${course}`);
 });
 
 //DONE
@@ -49,7 +52,6 @@ app.post('/api/courses', (req, res) => {
   }
   courses.push(course);
   res.send(course); // return id of the post to client | this is how post req are handled
-  console.log(courses);
 });
 
 //DONE
@@ -85,7 +87,6 @@ function findCourse(id) {
   //NOTE: I suspect it return on the first one -> testFind();
   function testFind() {
     const val = [1, 2, 3, 1, 3, 2, 2, 2].find(num => num === 2);
-    console.log(val);
   }
 }
 
