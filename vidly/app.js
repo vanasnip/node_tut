@@ -15,9 +15,13 @@ app.get('/api/genres',(req, res)=>{
   //NOTE - added app.use(express.json); should be express.json
   res.send(genres);
   console.log('all genres');
-})
+});
 // 3 TODO - create a new genre & working
 app.post('/api/genres', (req, res)=>{
+  //DONE/ validate genre
+  const { error } = validateGenre(req.body);
+  if(error) return res.status(400).send(error.details[0].message);
+
   const {name} = req.body;
   //DONE check if exists
   const exists = genres.find(c => c.name.toLowerCase() === name.toLowerCase());
@@ -29,14 +33,11 @@ app.post('/api/genres', (req, res)=>{
   //DONE generate id,
     name
   }
-  //DONE/ validate genre
-  const valid = validateGenre(genre);
-  if(valid.error) return res.status(400).send(valid.error.details[0].message);
   //DONE push genre to genres
   genres.push(genre);
   //DONE send.res(genre)
   res.send(genre);
-})
+});
 // 4 TODO - update a genre
 app.put('/api/genres/:id', (req, res)=> {
   //DONE/ get passed id
@@ -47,16 +48,15 @@ app.put('/api/genres/:id', (req, res)=> {
   if(!genre) return res.status(404).send(`Genre with id ${id} was not found`);
   //DONE/ validate name param
   const { name }  = req.body;
-  const valid = validateGenre({
-    name
-  });
+  const valid = validateGenre(req.body);
   //DONE/ if valid.error RETURN status 400 send(valid.error)
   if(valid.error) return res.status(400).send(valid.error);
   //DONE/ else edit genre - in this instance give the genre a new name
   genre.name = name;
   //DONE/ send(edited genre);
   res.send(genre)
-})
+  console.log(`added genre ${name}`);
+});
 // 5 TODO - delete a genre
 app.delete('/api/genres/:id', (req,res)=> {
   //DONE/ get id
@@ -72,7 +72,19 @@ app.delete('/api/genres/:id', (req,res)=> {
   genres.splice(index, 1);
   console.log(`deleted genre ${genre.name}`);
 
+});
+app.get('/api/genres/:id',(req,res)=>{
+  //DONE/ get id
+  const { id } = req.params;
+  //DONE/ find getGenre
+  const genre = findGenre(id);
+  //DONE/ if not found return 404 not found
+  if(!genre) return res.status(404).send(`Genre with id ${id} was not found`);
+  //DONE/ send client genre
+  res.send(genre);
+  console.log(`got genres ${genre.name}`);
 })
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
