@@ -5,11 +5,15 @@ const authenticate = require('./auth');
 const app = express();
 const Joi = require('joi');
 
+// Middleware
+//NOTE built-in
 app.use(express.json());
+app.use(express.urlencoded({ extended: true})); // ?key=value&key=value  // populates  req.body
+app.use(express.static('public'));
 
+//NOTE custom
 app.use(logger);
-
-app.use();
+app.use(authenticate);
 
 const courses = [
   { id: 1, name: 'course1' },
