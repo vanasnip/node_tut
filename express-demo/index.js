@@ -1,3 +1,4 @@
+const config = require('config');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const express = require('express');
@@ -24,6 +25,10 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // ?key=value&key=value  // populates  req.body
 app.use(express.static('public'));
+
+// Configuration
+console.log(`Application Name: ${config.get('name')}`);
+console.log(`Mail Server Name: ${config.get('mail.host')}`);
 
 //NOTE custom
 app.use(logger);
