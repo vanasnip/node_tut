@@ -1,14 +1,28 @@
-
+const helmet = require('helmet');
+const morgan = require('morgan');
 const express = require('express');
 const logger = require('./logger');
 const authenticate = require('./auth');
 const app = express();
 const Joi = require('joi');
 
+//Environment variables
+
+
+//NOTE if process.env.NODE_ENV is not set //undefined
+//NOTE app.get('env') defaults to development
+console.log(`app env: ${app.get('env')}`);
+//NOTE allow logging only in dev environment
+if (app.get('env') === 'development') {
+  console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+  app.use(morgan('short'));
+  console.log(`Morgan enabled...`);
+}
 // Middleware
 //NOTE built-in
+app.use(helmet());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true})); // ?key=value&key=value  // populates  req.body
+app.use(express.urlencoded({ extended: true })); // ?key=value&key=value  // populates  req.body
 app.use(express.static('public'));
 
 //NOTE custom
@@ -62,7 +76,7 @@ app.post('/api/courses', (req, res) => {
 //DONE
 app.put('/api/courses/:id', (req, res) => {
   const course = findCourse(req.params.id);
-  if (!course) return  res.status(404).send(`The course with the given ID: ${req.params.id} was not found.`);// 404 not found
+  if (!course) return res.status(404).send(`The course with the given ID: ${req.params.id} was not found.`);// 404 not found
   const { error } = validateCourse(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   course.name = req.body.name;
@@ -75,7 +89,7 @@ app.delete('/api/courses/:id', (req, res) => {
   const course = findCourse(id);
   if (!course) return res.status(404).send(`The course with the given ID: ${id} was not found.`);// 404 not found
   const index = courses.indexOf(course);
-  courses.splice(index,1);
+  courses.splice(index, 1);
   res.send(course);
 
   //NOTE array methods ->
