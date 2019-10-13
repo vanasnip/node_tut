@@ -29,6 +29,7 @@ app.use(express.static('public'));
 // Configuration
 console.log(`Application Name: ${config.get('name')}`);
 console.log(`Mail Server Name: ${config.get('mail.host')}`);
+console.log(`Mail Server Password: ${config.get('mail.password')}`);
 
 //NOTE custom
 app.use(logger);
