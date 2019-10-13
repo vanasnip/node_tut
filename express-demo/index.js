@@ -1,3 +1,5 @@
+const startUpDebugger = require('debug')('app:startup');// DEBUG=app:startup
+const dbDebugger = require('debug')('app:db');// DEBUG=app:db
 const config = require('config');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -17,8 +19,14 @@ console.log(`app env: ${app.get('env')}`);
 if (app.get('env') === 'development') {
   console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
   app.use(morgan('short'));
-  console.log(`Morgan enabled...`);
+  startUpDebugger(`Morgan enabled...`);
 }
+//NOTE/ 03 to export both startup & db -> export DEBUG=app:startup,app:db or for all use wildcars app:*
+//NOTE/ short hand -> DEBUG=app:db nodemon index.js
+startUpDebugger(`Morgan enabled...`);
+//DB work
+dbDebugger('connected to the database..');
+//NOTE 04 if just one name the debugger just debug, with it's environment variables still
 // Middleware
 //NOTE built-in
 app.use(helmet());
