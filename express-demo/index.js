@@ -9,9 +9,9 @@ const authenticate = require('./auth');
 const app = express();
 const Joi = require('joi');
 
+app.set('view engine', 'pug'); // express will automatically load, no need to require pug
+app.set('views', './views'); // default views // optional
 //Environment variables
-
-
 //NOTE if process.env.NODE_ENV is not set //undefined
 //NOTE app.get('env') defaults to development
 console.log(`app env: ${app.get('env')}`);
@@ -51,8 +51,9 @@ const courses = [
 
 //DONE
 app.get('/', (req, res) => {
-  let message = `Hello World`;
-  res.send(message); // client o
+  const message = `Hello World`;
+  const title = "Ivan's express app";
+  res.render('index',{message, title}); // client o
 });
 
 //DONE
