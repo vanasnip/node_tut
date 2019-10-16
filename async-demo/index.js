@@ -35,7 +35,7 @@ function getRepos(username) {
     }, 2000);
   });
 }
-//
+
 function getCommits(repo) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
