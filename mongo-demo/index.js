@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/playground') // this conenct method returns a promise
-.then(()=> console.log(`Conencted to MongoDB...`))
-.catch(err => console.error(`Could not connect to the MongoDB... ${err}`));
+  .then(() => console.log(`Conencted to MongoDB...`))
+  .catch(err => console.error(`Could not connect to the MongoDB... ${err}`));
 
 const courseSchema = new mongoose.Schema({
   name: String,
   author: String,
   tags: [String],
-  date: {type: Date, default: Date.now },
+  date: { type: Date, default: Date.now },
   isPublished: Boolean
 });
 
@@ -15,10 +15,18 @@ const courseSchema = new mongoose.Schema({
 // Human, john
 // Course, nodeCourse
 
-const Course = mongoose.model('Course', courseSchema);
-const course = new Course({
-  name: 'Node.js',
-  author: 'Ivano',
-  tags: ['node', 'backend'],
-  isPublished: true
-})
+async function CreateCourse() {
+  const Course = mongoose.model('Course', courseSchema);
+  const course = new Course({
+    name: 'Angular',
+    author: 'Ivano',
+    tags: ['angular', 'frontend'],
+    isPublished: true
+  });
+
+  const result = await course.save()
+  console.log(result);
+}
+
+
+CreateCourse();
