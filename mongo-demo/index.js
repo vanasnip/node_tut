@@ -40,9 +40,13 @@ async function getCourses(){
 
   const courses = await Course
   // .find({ author: 'Ivano', isPublished: true})
-  .find()
-  .or([{author: 'Ivano'},{isPublished: true}])
-  .and([{name:'Angular'},{}])
+  // .find()
+  // .or([{author: 'Ivano'},{isPublished: true}])
+  // .and([{name:'Angular'},{}])
+  // starts with ivan
+  .find({author: /^Ivan/})
+  // ends with mams
+  .or([{name: /Mams$/i}, {author: /.*Ivan.*/1}]) // end with mams, includes somewhere in the middle Ivan case insensitve
   .limit(10)
   .sort({name: 1})
   .select({ name: 1, tags: 1});
