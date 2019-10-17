@@ -1,12 +1,24 @@
 //Callbacks
 
-
+/*
 getUser(1)
   .then(({ githubUsername: user }) => getRepos(user))
   .then(({ repos }) => getCommits(repos[0]))
   .then(({ commits }) => console.log(`finally got the commits I was after...`))
   .catch(err => console.error(err.message));
+*/
 
+accessCommits();
+// Async and Await approach
+async function accessCommits() {
+  try {
+    const { githubUsername } = await getUser(1);
+    const { repos } = await getRepos(githubUsername);
+    const commits = await getCommits(repos[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
 
 function getUser(id) {
   return new Promise((resolve, reject) => {
