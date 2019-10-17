@@ -32,8 +32,18 @@ async function CreateCourse() {
 //CreateCourse();
 
 async function getCourses(){
+  // eq -> equal
+  // ne -> not equal
+  // gt -> greater than
+  // gte -> greater than or equal to
+  // lt -> less than
+  // lte -> less than or equal to
+  // in
+  // nin -> not in
   const courses = await Course
-  .find({ author: 'Ivano', isPublished: true})
+  // .find({ author: 'Ivano', isPublished: true})
+  // .find({ price: { $gt: 10, $lte:20}})
+  .find({ price: {$in: [10,15,20]}})
   .limit(10)
   .sort({name: 1})
   .select({ name: 1, tags: 1});
