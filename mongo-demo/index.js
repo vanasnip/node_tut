@@ -15,8 +15,9 @@ const courseSchema = new mongoose.Schema({
 // Human, john
 // Course, nodeCourse
 
+const Course = mongoose.model('Course', courseSchema);
+
 async function CreateCourse() {
-  const Course = mongoose.model('Course', courseSchema);
   const course = new Course({
     name: 'Angular',
     author: 'Ivano',
@@ -28,5 +29,13 @@ async function CreateCourse() {
   console.log(result);
 }
 
+//CreateCourse();
 
-CreateCourse();
+async function getCourses(){
+  const courses = await Course
+  .find({ author: 'Ivano', isPublished: true});
+  console.log(courses);
+}
+
+getCourses();
+
