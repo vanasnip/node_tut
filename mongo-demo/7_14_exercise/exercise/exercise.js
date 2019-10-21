@@ -15,13 +15,26 @@ const courseSchema = new mongoose.Schema({
 const Course = mongoose.model('courses', courseSchema);
 function getCourses() {
   return Course
-    .find({isPublished: true, tags:'backend'})
-    .sort({name:1})
-    .select({name:1, author: 1})
+    // Exercise 1
+    // .find({isPublished: true, tags:'backend'})
+    // .sort({name:1})
+    // .select({name:1, author: 1})
+
+    // Exercise 2
+    .find({ isPublished: true})
+    .or([{tags: 'frontend'}, {tags: 'backend'}])
+    .sort('-price')
+    .select({ name: 1, author: 1, price: 1 })
 }
-async function run(){
+async function run() {
   const courses = await getCourses();
-  console.log(courses);
+  console.log(courses.map(crs => ({
+      name: crs.get('name'),
+      author: crs.get('author'),
+      price: crs.get('price')
+    })
+  ))
+  // console.log(courses);
 }
 
 run();
