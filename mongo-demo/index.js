@@ -101,5 +101,10 @@ async function updateCourseDirectly(id) {
   console.log(`After: ${printAt.name} by ${printAt.author}`);
 }
 
-updateCourseDirectly('5da83fb64c270ce2050f5642');
+async function removeCourse(id){
+  const result = await Course.deleteOne({ _id: id });
+  console.log(result);
+}
+
+removeCourse('5da83fb64c270ce2050f5642');
 
