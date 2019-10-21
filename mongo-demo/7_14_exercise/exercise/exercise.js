@@ -21,10 +21,17 @@ function getCourses() {
     // .select({name:1, author: 1})
 
     // Exercise 2
-    .find({ isPublished: true})
-    .or([{tags: 'frontend'}, {tags: 'backend'}])
+    // .find({ isPublished: true})
+    // .or([{tags: 'frontend'}, {tags: 'backend'}])
+    // .sort('-price')
+    // .select({ name: 1, author: 1, price: 1 })
+
+
+    // Exercise 3
+    .find({ isPublished: true })
+    .or([{ price: { $gte: 15 } }, { name: /.*by.*/i }])
     .sort('-price')
-    .select({ name: 1, author: 1, price: 1 })
+    .select({ name: 1, author: 1, price: 1 });
 }
 async function run() {
   const courses = await getCourses();
