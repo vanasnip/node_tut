@@ -90,10 +90,10 @@ async function updateCourse(id) {
 async function updateCourseDirectly(id) {
   const course = await Course.findByIdAndUpdate({ _id: id }, {
     $set: {
-      author: 'Ivanovanvan',
+      author: 'Json commit',
       isPublished: true
     }
-  });
+  }, {new: true});
   const printAt = {
     name:course.get('name'),
     author: course.get('author')
