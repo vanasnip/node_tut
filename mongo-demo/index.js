@@ -50,5 +50,42 @@ async function getCourses(){
   console.log(courses);
 }
 
-getCourses();
+
+async function updateCourse(id) {
+  // Approach: Query first
+  // findById()
+  console.log('function running');
+  const course = await Course.findById(id);
+  if(!course) {
+    console.log('no course found');
+    return;
+  }
+  const printBf = {
+    name : course.get('name'),
+    author: course.get('author')
+  }
+   console.log(`After: ${printBf.name} by ${printBf.author}`);
+  // Modify its properties
+  course.set({
+    isPublished: true,
+    author: 'Ivano'
+  });
+  // course.isPublished = true;
+  // course.author = 'Another Athor';
+
+  // save()
+   const result = await course.save();
+    const printAt = {
+    name : result.get('name'),
+    author: result.get('author')
+  }
+   console.log(`After: ${printAt.name} by ${printAt.author}`);
+
+  //__________________________________________________
+  // Approach: Update first
+  // Update directly
+  // Optionaly: get the updated document
+}
+
+updateCourse('5da83fb64c270ce2050f5642');
 
