@@ -31,7 +31,7 @@ async function CreateCourse() {
 
 //CreateCourse();
 
-async function getCourses(){
+async function getCourses() {
   // eq -> equal // ne -> not equal // gt -> greater than // gte -> greater than or equal to
   // lt -> less than // lte -> less than or equal to // in // nin -> not in
 
@@ -41,12 +41,12 @@ async function getCourses(){
   // /api/courses?pageNumber=2&pageSize=10
 
   const courses = await Course
-  .find({author: /^Ivan/})
-  .or([{name: /Mams$/i}, {author: /.*Ivan.*/i}])
-  .skip((pageNumber - 1) * pageSize)
-  .limit(pageSize)
-  .sort({name: 1})
-  .count();
+    .find({ author: /^Ivan/ })
+    .or([{ name: /Mams$/i }, { author: /.*Ivan.*/i }])
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .sort({ name: 1 })
+    .count();
   console.log(courses);
 }
 
@@ -56,15 +56,15 @@ async function updateCourse(id) {
   // findById()
   console.log('function running');
   const course = await Course.findById(id);
-  if(!course) {
+  if (!course) {
     console.log('no course found');
     return;
   }
   const printBf = {
-    name : course.get('name'),
+    name: course.get('name'),
     author: course.get('author')
   }
-   console.log(`After: ${printBf.name} by ${printBf.author}`);
+  console.log(`After: ${printBf.name} by ${printBf.author}`);
   // Modify its properties
   course.set({
     isPublished: true,
@@ -74,12 +74,12 @@ async function updateCourse(id) {
   // course.author = 'Another Athor';
 
   // save()
-   const result = await course.save();
-    const printAt = {
-    name : result.get('name'),
+  const result = await course.save();
+  const printAt = {
+    name: result.get('name'),
     author: result.get('author')
   }
-   console.log(`After: ${printAt.name} by ${printAt.author}`);
+  console.log(`After: ${printAt.name} by ${printAt.author}`);
 
   //__________________________________________________
   // Approach: Update first
@@ -87,15 +87,18 @@ async function updateCourse(id) {
   // Optionaly: get the updated document
 }
 
-async function updateCourseDirectly(id){
-  const result = await Course.update({_id: id}, {
+async function updateCourseDirectly(id) {
+  const course = await Course.findByIdAndUpdate({ _id: id }, {
     $set: {
       author: 'Ivanovanvan',
       isPublished: true
     }
   });
-  console.log(result);
-
+  const printAt = {
+    name:course.get('name'),
+    author: course.get('author')
+  }
+  console.log(`After: ${printAt.name} by ${printAt.author}`);
 }
 
 updateCourseDirectly('5da83fb64c270ce2050f5642');
