@@ -87,5 +87,16 @@ async function updateCourse(id) {
   // Optionaly: get the updated document
 }
 
-updateCourse('5da83fb64c270ce2050f5642');
+async function updateCourseDirectly(id){
+  const result = await Course.update({_id: id}, {
+    $set: {
+      author: 'Ivanovanvan',
+      isPublished: true
+    }
+  });
+  console.log(result);
+
+}
+
+updateCourseDirectly('5da83fb64c270ce2050f5642');
 
