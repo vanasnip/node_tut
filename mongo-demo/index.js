@@ -17,19 +17,36 @@ const courseSchema = new mongoose.Schema({
 
 const Course = mongoose.model('Course', courseSchema);
 
-async function CreateCourse() {
-  const course = new Course({
-    name: 'Angular',
-    author: 'Ivano',
-    tags: ['angular', 'frontend'],
-    isPublished: true
-  });
+async function CreateCourse(courseData) {
+  const course = new Course(courseData);
 
   const result = await course.save()
   console.log(result);
 }
 
 //CreateCourse();
+
+const courseList = [
+  {
+    name: 'Angular 7',
+    author: 'Ivano',
+    tags: ['angular 7', 'frontend'],
+    isPublished: true
+  },
+  {
+    name: 'react 7',
+    author: 'Ivano',
+    tags: ['react 7', 'frontend'],
+    isPublished: true
+  },
+  {
+    name: 'vue 7',
+    author: 'Ivano',
+    tags: ['vue 7', 'frontend'],
+    isPublished: true
+  }
+]
+//.forEach(crs => CreateCourse(crs));
 
 async function getCourses() {
   // eq -> equal // ne -> not equal // gt -> greater than // gte -> greater than or equal to
@@ -106,5 +123,10 @@ async function removeCourse(id){
   console.log(result);
 }
 
-removeCourse('5da83fb64c270ce2050f5642');
+async function removeCourses(id){
+  // const result = await Course.deleteMany({ _id: id}); // look up deleteMany in docs
+  const course = await Course.findByIdAndRemove(id);
+  console.log(course);
+}
+removeCourses('5dadc0f6f8b8ec0335cec3ab');
 
